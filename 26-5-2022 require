@@ -1,0 +1,43 @@
+// SPDX-License-Identifier: GLP-3.0
+
+pragma solidity ^0.8.0;
+
+contract modifierExample {
+
+    bool public myBolean;
+    string public myString;
+    uint public myNumber;
+    mapping(uint => bool) public myMapping;
+
+    mapping(address => uint) public myAddresses;
+
+    function receiveMoney() public payable{
+        myAddresses[msg.sender] += msg.value;
+    }
+
+    function withdrawMoney(uint amount) public {
+        uint amountToEther = amount * (10**18);
+        require(amountToEther <= myAddresses[msg.sender], "Not enoght money.");
+        myAddresses[msg.sender] -= amountToEther;
+        address myWallet = msg.sender;
+        payable(myWallet).transfer(amountToEther);
+    }
+
+    //function withdrawMoney(uint amount) public {
+        //uint amountToEther = amount * (10**18);
+        //if(amountToEther <= myAddresses[msg.sender]){
+        //myAddresses[msg.sender] -= amountToEther;
+        //address myWallet = msg.sender;
+        //payable(myWallet).transfer(amountToEther);
+        //}
+    //}
+
+    function setValue(uint index, bool value) public {
+        myMapping[index] = value;
+    }
+
+    function setMyAddresses(address wallet, uint amount) public {
+        myAddresses[wallet] = amount;
+    }
+
+}
